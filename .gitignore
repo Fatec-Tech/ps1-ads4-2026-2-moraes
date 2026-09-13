@@ -14,11 +14,7 @@ web_modules/
 
 # Variáveis de Ambiente (Segurança e Chaves de API)
 .env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-*.env
+.app
 
 # Arquivos de Build / Compilação
 dist/
