@@ -129,3 +129,7 @@ Ao clicar em qualquer card de Pokémon, a aplicação deve abrir um **Modal do B
    ```
 
 ---
+
+![Demonstração da Tela Inicial - Pokédex](./img/tela-inicial.png)
+
+![Demonstração da Tela Modal - Pokédex](./img/tela-modal.png)
