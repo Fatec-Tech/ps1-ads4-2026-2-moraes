@@ -1,0 +1,9 @@
+{
+	"name": "aula-03-servidor-pacientes",
+	"version": "1.0.0",
+	"description": "Servidor Node.js do projeto de cadastro de pacientes",
+	"main": "server.js",
+	"scripts": {
+		"start": "node server.js"
+	}
+}

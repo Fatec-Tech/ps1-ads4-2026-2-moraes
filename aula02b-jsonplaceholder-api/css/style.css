@@ -1,0 +1,12 @@
+body {
+  background-color: #f8f9fa;
+}
+
+.card-usuario {
+  cursor: pointer;
+  transition: transform 0.15s ease-in-out;
+}
+
+.card-usuario:hover {
+  transform: translateY(-3px);
+}
