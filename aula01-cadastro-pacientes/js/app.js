@@ -8,7 +8,9 @@ const tabela = document.getElementById('tabela-pacientes');
 // Função responsável por adicionar um paciente ao array
 function adicionarPaciente(nome, email, nascimento) {
 	const novoPaciente = { nome, email, nascimento };
+	console.log(novoPaciente);
 	pacientes.push(novoPaciente);
+	console.log(pacientes.length);
 }
 
 // Função responsável por desenhar a tabela inteira a partir do array

@@ -14,8 +14,8 @@ async function fetchPokemonData(urlOrName) {
 	const response = await fetch(url);
 	if (!response.ok) {
 		throw new Error('Pokémon não encontrado');
-  }
-  console.log('Response:', response); // Log da resposta para depuração
+	}
+	console.log('Response:', response); // Log da resposta para depuração
 	return await response.json();
 }
 
@@ -46,7 +46,7 @@ async function loadInitialPokemon(limit = 20) {
 
 // Função para criar a estrutura visual do Card no Bootstrap
 function renderPokemonCard(pokemon) {
-  console.log('Rendering Pokémon:', pokemon); // Log do Pokémon para depuração
+	console.log('Rendering Pokémon:', pokemon); // Log do Pokémon para depuração
 	// Pega a imagem oficial de alta qualidade (dream_world ou official-artwork)
 	const imageUrl =
 		pokemon.sprites.other['official-artwork'].front_default ||
