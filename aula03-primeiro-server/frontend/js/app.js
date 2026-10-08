@@ -1,4 +1,3 @@
-const URL_API = 'http://localhost:3000/pacientes';
 const pacientes = [];
 
 const formulario = document.getElementById('form-paciente');
@@ -31,14 +30,17 @@ function formatarData(dataISO) {
 // Nova função: busca os pacientes iniciais a partir do arquivo JSON
 async function carregarPacientesIniciais() {
 	try {
-		const resposta = await fetch(URL_API); // única linha que muda de verdade
+		const resposta = await fetch('data/pacientes.json');
+		console.log(resposta);
 
+		// Nem toda resposta é sucesso — precisamos checar antes de usar
 		if (!resposta.ok) {
 			throw new Error(`Erro HTTP: ${resposta.status}`);
 		}
 
-		const dados = await resposta.json();
+		const dados = await resposta.json(); // converte a resposta em objeto JS
 
+		// Adiciona cada paciente vindo do arquivo ao nosso array local
 		dados.forEach((paciente) => {
 			adicionarPaciente(paciente.nome, paciente.email, paciente.nascimento);
 		});
@@ -47,11 +49,13 @@ async function carregarPacientesIniciais() {
 	} catch (erro) {
 		console.error('Não foi possível carregar os pacientes:', erro);
 		mensagemCarregando.textContent =
-			'Erro ao carregar pacientes. O servidor está rodando?';
-		return;
+			'Erro ao carregar pacientes. Veja o console para mais detalhes.';
+		return; // sai da função sem esconder a mensagem de erro
 	}
 
-	mensagemCarregando.style.display = 'none';
+	mensagemCarregando.textContent =
+		'Dados carregados com sucesso.';
+	// mensagemCarregando.style.display = 'none'; // esconde "Carregando..." em caso de sucesso
 }
 
 formulario.addEventListener('submit', (event) => {
