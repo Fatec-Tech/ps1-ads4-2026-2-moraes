@@ -1,100 +1,71 @@
-const URL_BASE = 'https://jsonplaceholder.typicode.com';
+const URL_API = 'https://api-clinica-glxw.onrender.com/pacientes';
+const pacientes = [];
 
-// Referências aos elementos do DOM
-const telaLista = document.getElementById('tela-lista');
-const telaDetalhe = document.getElementById('tela-detalhe');
+const formulario = document.getElementById('form-paciente');
+const tabela = document.getElementById('tabela-pacientes');
 const mensagemCarregando = document.getElementById('carregando');
-const detalheNome = document.getElementById('detalhe-nome');
-const listaPosts = document.getElementById('lista-posts');
-const botaoVoltar = document.getElementById('btn-voltar');
 
-// Busca a lista de usuários na API
-async function carregarUsuarios() {
+function adicionarPaciente(nome, email, nascimento) {
+	pacientes.push({ nome, email, nascimento });
+}
+
+function renderizarTabela() {
+	tabela.innerHTML = '';
+
+	pacientes.forEach((paciente) => {
+		const linha = document.createElement('tr');
+		linha.innerHTML = `
+      <td>${paciente.nome}</td>
+      <td>${paciente.email}</td>
+      <td>${formatarData(paciente.nascimento)}</td>
+    `;
+		tabela.appendChild(linha);
+	});
+}
+
+function formatarData(dataISO) {
+	const [ano, mes, dia] = dataISO.split('-');
+	return `${dia}/${mes}/${ano}`;
+}
+
+// Nova função: busca os pacientes iniciais a partir do arquivo JSON
+async function carregarPacientesIniciais() {
 	try {
-		const resposta = await fetch(`${URL_BASE}/users`);
+		const resposta = await fetch(URL_API); // única linha que muda de verdade
 
 		if (!resposta.ok) {
 			throw new Error(`Erro HTTP: ${resposta.status}`);
 		}
 
-		const usuarios = await resposta.json();
-		renderizarListaUsuarios(usuarios);
+		const dados = await resposta.json();
+
+		dados.forEach((paciente) => {
+			adicionarPaciente(paciente.nome, paciente.email, paciente.nascimento);
+		});
+
+		renderizarTabela();
 	} catch (erro) {
-		console.error('Erro ao carregar usuários:', erro);
-		mensagemCarregando.textContent = 'Não foi possível carregar os usuários.';
+		console.error('Não foi possível carregar os pacientes:', erro);
+		mensagemCarregando.textContent =
+			'Erro ao carregar pacientes. O servidor está rodando?';
 		return;
 	}
 
 	mensagemCarregando.style.display = 'none';
 }
 
-// Desenha um "card" para cada usuário na tela de lista
-function renderizarListaUsuarios(usuarios) {
-	telaLista.innerHTML = '';
+formulario.addEventListener('submit', (event) => {
+	event.preventDefault();
 
-	usuarios.forEach((usuario) => {
-		const coluna = document.createElement('div');
-		coluna.className = 'col-md-4';
+	const nome = document.getElementById('nome').value;
+	const email = document.getElementById('email').value;
+	const nascimento = document.getElementById('nascimento').value;
 
-		coluna.innerHTML = `
-      <div class="card card-usuario h-100" data-id="${usuario.id}">
-        <div class="card-body">
-          <h5 class="card-title">${usuario.name}</h5>
-          <p class="card-text text-muted">${usuario.email}</p>
-          <p class="card-text"><small>${usuario.company.name}</small></p>
-        </div>
-      </div>
-    `;
+	adicionarPaciente(nome, email, nascimento);
+	renderizarTabela();
 
-		// Cada card criado dinamicamente recebe seu próprio listener de clique
-		coluna.querySelector('.card-usuario').addEventListener('click', () => {
-			abrirDetalheUsuario(usuario);
-		});
-
-		telaLista.appendChild(coluna);
-	});
-}
-
-// Busca os posts de um usuário específico e mostra a tela de detalhe
-async function abrirDetalheUsuario(usuario) {
-	detalheNome.textContent = `Posts de ${usuario.name}`;
-	listaPosts.innerHTML = '<li class="list-group-item">Carregando posts...</li>';
-
-	telaLista.classList.add('d-none');
-	telaDetalhe.classList.remove('d-none');
-
-	try {
-		// Segunda requisição, feita a partir do ID do usuário selecionado
-		const resposta = await fetch(`${URL_BASE}/posts?userId=${usuario.id}`);
-
-		if (!resposta.ok) {
-			throw new Error(`Erro HTTP: ${resposta.status}`);
-		}
-
-		const posts = await resposta.json();
-		renderizarPosts(posts);
-	} catch (erro) {
-		console.error('Erro ao carregar posts:', erro);
-		listaPosts.innerHTML =
-			'<li class="list-group-item text-danger">Erro ao carregar posts.</li>';
-	}
-}
-
-function renderizarPosts(posts) {
-	listaPosts.innerHTML = '';
-
-	posts.forEach((post) => {
-		const item = document.createElement('li');
-		item.className = 'list-group-item';
-		item.innerHTML = `<strong>${post.title}</strong><p class="mb-0">${post.body}</p>`;
-		listaPosts.appendChild(item);
-	});
-}
-
-// Botão para voltar da tela de detalhe para a tela de lista
-botaoVoltar.addEventListener('click', () => {
-	telaDetalhe.classList.add('d-none');
-	telaLista.classList.remove('d-none');
+	formulario.reset();
 });
 
-carregarUsuarios();
+// Assim que o script carrega, já dispara a busca dos dados iniciais
+carregarPacientesIniciais();
