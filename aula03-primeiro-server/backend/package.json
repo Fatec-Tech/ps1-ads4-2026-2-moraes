@@ -1,10 +1,14 @@
 {
-  "name": "aula-03-servidor-pacientes",
-  "version": "1.0.0",
-  "description": "Servidor Node.js do projeto de cadastro de pacientes",
-  "main": "server.js",
-  "scripts": {
-    "start": "node server.js"
-  }
+	"name": "aula-03-servidor-pacientes",
+	"version": "1.0.0",
+	"description": "Servidor Node.js do projeto de cadastro de pacientes",
+	"main": "server.js",
+	"scripts": {
+		"start": "node server.js",
+		"dev": "node --watch server.js"
+	},
+	"dependencies": {
+		"cors": "^2.8.6",
+		"express": "^5.3.0"
+	}
 }
-

@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
@@ -16,7 +16,13 @@
   <div class="container py-5">
     <h1 class="mb-4">Cadastro de Pacientes</h1>
 
+    <!-- Área para mensagens de sucesso/erro -->
+    <div id="mensagem"></div>
+
     <form id="form-paciente" class="row g-3 mb-5">
+      <!-- Campo oculto: se tiver valor, estamos EDITANDO (PUT); se vazio, CRIANDO (POST) -->
+      <input type="hidden" id="id">
+
       <div class="col-md-4">
         <label for="nome" class="form-label">Nome</label>
         <input type="text" class="form-control" id="nome" required>
@@ -27,27 +33,29 @@
         <input type="email" class="form-control" id="email" required>
       </div>
 
-      <div class="col-md-3">
-        <label for="nascimento" class="form-label">Data de nascimento</label>
+      <div class="col-md-2">
+        <label for="nascimento" class="form-label">Nascimento</label>
         <input type="date" class="form-control" id="nascimento" required>
       </div>
 
-      <div class="col-md-1 d-flex align-items-end">
-        <button type="submit" class="btn btn-primary w-100">+</button>
+      <div class="col-md-2 d-flex align-items-end gap-2">
+        <button type="submit" id="btn-salvar" class="btn btn-primary">Salvar</button>
+        <button type="button" id="btn-cancelar" class="btn btn-outline-secondary d-none">Cancelar</button>
       </div>
     </form>
 
     <h2 class="h4 mb-3">Pacientes cadastrados</h2>
-
-    <!-- Mensagem de carregamento, visível enquanto os dados não chegam -->
-    <p id="carregando" class="text-muted">Carregando pacientes...</p>
+    <p id="carregando" class="text-muted">
+      Carregando pacientes... (a primeira requisição pode levar cerca de 1 minuto no servidor gratuito)
+    </p>
 
     <table class="table table-striped">
       <thead>
         <tr>
           <th>Nome</th>
           <th>E-mail</th>
-          <th>Data de nascimento</th>
+          <th>Nascimento</th>
+          <th>Ações</th>
         </tr>
       </thead>
       <tbody id="tabela-pacientes"></tbody>
